@@ -1,6 +1,6 @@
 package com.example.martyna.scholarshipproject_reportcard;
 
-public class ReportCard {
+public class ReportCard implements Parcelable {
 
     /**
      * Field for student's ID.
@@ -147,4 +147,41 @@ public class ReportCard {
                 "\nGrade in History: " + mHistoryGrade + " }";
 
     }
+
+    protected ReportCard(Parcel in) {
+        mStudentId = in.readInt();
+        mStudentFirstName = in.readString();
+        mStudentLastName = in.readString();
+        mMathematicsGrade = (char) in.readValue(char.class.getClassLoader());
+        mChemistryGrade = in.readInt();
+        mHistoryGrade = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mStudentId);
+        dest.writeString(mStudentFirstName);
+        dest.writeString(mStudentLastName);
+        dest.writeValue(mMathematicsGrade);
+        dest.writeInt(mChemistryGrade);
+        dest.writeDouble(mHistoryGrade);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ReportCard> CREATOR = new Parcelable.Creator<ReportCard>() {
+        @Override
+        public ReportCard createFromParcel(Parcel in) {
+            return new ReportCard(in);
+        }
+
+        @Override
+        public ReportCard[] newArray(int size) {
+            return new ReportCard[size];
+        }
+    };
 }
